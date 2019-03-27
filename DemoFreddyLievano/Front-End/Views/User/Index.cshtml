@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Demo.Model.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>            
+            <td>
+                @Html.DisplayNameFor(model => model.UserData.Email)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.LastName)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Username)
+            </td>            
+            <td>
+                @Html.DisplayNameFor(model => model.Rol)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Enabled)
+            </td>
+            <th></th>
+        </tr>
+    </thead>
+<tbody>
+        @foreach (var item in Model)
+        {
+            <tr>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserData.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Enabled)
+                </td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = item.Id })" title="Details"><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="javascript:deleteItem('@item.Id')" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    <script>
+        $(function () {
+            $('table').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'excel', title: 'Export' },
+                    { extend: 'pdf', title: 'ExampleFile' }
+                ]
+            });
+        });
+
+        function deleteItem(id) {
+            if (confirm('The record will be deleted. Sure?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Delete")',
+                    data: { id: id }
+                })
+                .success(function (response) {
+                    window.location.assign("@Url.Action("Index")");
+                })
+                .error(function (xhr, status) {
+                    alert('Cannot delete the item. Try again later.');
+                    console.log(xhr, status);
+                });
+            }
+        }
+    </script>
+}
+

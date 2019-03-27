@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet">
+    <link href="@Url.Content("~/css/cover.css")" rel="stylesheet">
+    @if (IsSectionDefined("Styles"))
+        {@RenderSection("Styles", required: false)}
+    @{
+        string username = ViewBag.UserName;
+        bool logged = !string.IsNullOrEmpty(username);
+    }
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+
+                @if (logged)
+                {
+                <ul class="nav navbar-nav">
+                    <li><p class="well-lg" style="color:ghostwhite"> @(ViewBag.UserName ?? "")</p></li>                    
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="@Url.Action("LogOut", "Account")">
+                            <i class="glyphicon glyphicon-log-out"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+                }
+                else
+                { @Html.Partial("_LoginPartial") }
+
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <!-- Alerts -->
+        @Html.Partial("_Alerts")
+
+        @RenderBody()
+        <hr />
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

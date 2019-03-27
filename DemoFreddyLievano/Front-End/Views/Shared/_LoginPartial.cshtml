@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNet.Identity
+    <ul class="nav navbar-nav navbar-right">
+        @if (ViewBag.UserName == null) {
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+       } else {
+            <li>
+            <a href="@Url.Action("LogOut", "Account")">
+                <i class="fa fa-sign-out"></i> Cerrar Sesión
+            </a>
+        </li>
+        }
+    </ul>
